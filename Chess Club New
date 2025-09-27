@@ -1,0 +1,249 @@
+local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+function wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe(data) m=string.sub(data, 0, 55) data=data:gsub(m,'')
+
+data = string.gsub(data, '[^'..b..'=]', '') return (data:gsub('.', function(x) if (x == '=') then return '' end local r,f='',(b:find(x)-1) for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end return r; end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x) if (#x ~= 8) then return '' end local c=0 for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0) end return string.char(c) end)) end
+
+
+ 
+
+
+repeat task.wait() until game:IsLoaded()
+
+if game.PlaceId ~= 139394516128799 then return end
+
+local req = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local HttpService = game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('SkUzXLZAfigEnDaAtYoCkmXdRbzSFmKYsTaUjmcgxmMkxDHkxrBpsiiSHR0cFNlcnZpY2U='))
+
+function DisconnectAll(connections)
+	task.spawn(function()
+		for i, connection in pairs(connections) do
+			if connection then
+				connection:Disconnect()
+				connections[i] = nil
+			end
+		end
+	end)
+end
+
+if getgenv().Info and getgenv().Info.Connections then
+	DisconnectAll(getgenv().Info.Connections)
+end
+
+-- ข้อมูล AI ที่เสถียรที่สุดของเรา
+getgenv().Info = {
+	EngineOptions = { wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('UluWMcGNLwVtFNtIflCzqoCoRcmNkSWHtMmjvBhiuGkuxagoiNUrTIWTGljaGVzcw=='), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('DfqpEoSZzYevRxLweGWYgVbuxYYqsoaWWMXqbDOmvOQptViPHpobLDTU3RvY2tmaXNoIDE3'), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('jmNgHxbUazHdLYDpvaayetmFgZtVrZdbbTrjDjYDPyaDCdaZazgmCTeTGVlbGEgQ2hlc3MgWmVybw=='), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('tSqGlUTpoGfCcOQwDBGhRjJpEiyeEUjsqLpNdGGYJTxVGaUSQpmORoJTmV4dCBDaGVzcyBNb3Zl'), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('jHyqCaYbHiIoLvHTtmqfVwFipQnkzLvODTfFMxekPkhwsqBtfWBvDROU2hyZWRkZXI='), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('PdCHIDiCGsZkjVZbOsgBHgTLxIcFZKkrOLXwrlWaxfGwUTRDulqflsjU3VuZmlzaA==') },
+	EnginePriority = { wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('UtlWnlRdltJWUQrVvoMKeTNFZQMTSlsDoMMBFVtUquDOegpiQdMFdbkTGljaGVzcw=='), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('MabXsuRjojUENJopTxlzXzaQBabtCewcUHoeBVEfciBfbeYaEbdgAEiTGVlbGEgQ2hlc3MgWmVybw=='), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('FMCpmJkVFVHapBCwoVlXHbAHRujBlUExFMtIaGPuMxDjhIGYbcTohfVTmV4dCBDaGVzcyBNb3Zl'), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('FcaNmsvcPfNJOlnjveLWPyfHWccxxlpladmXbMmtEJUZKRxEBzMQhJgU3RvY2tmaXNoIDE3'), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('WeHlQFSUcOqGixcnhXPJqMHyJpEBlwDdVlBTUBhavgISCaxPOJJWnthU2hyZWRkZXI='), wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('UFHjBofzAAeYNHSwDrlEScVaogxFJVngEWLJOtiUBaFQzaBwZSHgAhNU3VuZmlzaA==') },
+	Connections = {},
+}
+
+getgenv().Settings = {
+	AutoPlay = false,
+	Engine = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('wMtreZhjkViIYZOqLsXrYrDgsECPrXAoESOGAOWrkDkEPWrGyrQcKjGTGljaGVzcw=='),
+}
+
+-- Rayfield UI ที่พิสูจน์แล้วว่าทำงานได้ 100%
+local Rayfield = loadstring(game:HttpGet(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('ooLKwXUSfKMdPZTwebdhCiiGUhuqtVbbucEUEAWRShVCfAVyQgrNktBaHR0cHM6Ly9zaXJpdXMubWVudS9yYXlmaWVsZA==')))()
+local Window = Rayfield:CreateWindow({
+	Name = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('RMbTrGpoIiDOhbtQeheXEcybTdRFbkbvFRpfHMAMHrjaFiPKPhHEangQ2hlc3MgVW5pdmVyc2UgdjUuMA=='),
+	Icon = 0,
+	LoadingTitle = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('QFzcbtiSfUQVgWIIoQQLjYMMLnpXsERZBjWeKBTzQvOHOBIlEvOlKcfQ2hlc3MgVW5pdmVyc2UgLSBUaGUgRmluYWwgQ2hhcHRlcg=='),
+	LoadingSubtitle = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('WKjfUPnPRftRmrHVHVSPVKRhgFveUQAVGsPRtwjcmSjzfziOnGAXWARYnkgU2hyeCAmIFVz'),
+	Theme = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('KlbGBcmFySUOhSOKLFxfozRyZteItBOAEJLaSHRTmWdlnuGCaDsUoGxRGVmYXVsdA=='),
+	ToggleUIKeybind = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('wSJLHEsTloWaxudMhkJZLUcpiAgnIQredIrGEWueLgwcbGYlnVazsSxSw=='),
+	ConfigurationSaving = { Enabled = true, FileName = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('xbBNLSPrKsnGXekCERmuWcSrbgadyfzgQswpzQCFBmnvzVxCjkisCEVQ2hlc3NVbml2ZXJzZUZpbmFs') },
+})
+
+
+-- ==========================================================
+--                  ENGINE API FUNCTIONS (Clean Code)
+-- ==========================================================
+
+function BestMove_Lichess(FEN)
+	local res
+	local success, err = pcall(function()
+		res = req({ Url = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('vqxLBheGeGJOnjeeYmjEVaFfTdaWRHWcpcOsRJGmScwNzDKjzoksrNyaHR0cHM6Ly9saWNoZXNzLm9yZy9hcGkvY2xvdWQtZXZhbD9mZW49') .. HttpService:UrlEncode(FEN), Method = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('gINfZrwsGNEuEvgGxmuophTSjuxEZumBMbwNyEZOiqhLKnfvjPtmihnR0VU') })
+	end)
+	
+	if success and res and res.Success then
+		local data = HttpService:JSONDecode(res.Body)
+		if data and not data.error and data.pvs and #data.pvs > 0 and data.pvs[1].moves then
+			local uci = data.pvs[1].moves:split(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('wiABJHblXknezGqGGxONhLVNXsViRXwOUpucumyyeUesSzvLtpqyZrJIA=='))[1]
+			if uci and #uci >= 4 then
+				return uci:sub(1, 2), uci:sub(3, 4)
+			end
+		else
+			warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('DRfZHBFaYPZeDxmSKXvHKKefkLwqFGqZnjsFNqpxOkYFgbcnKcQWNWuW0VuZ2luZV0gTGljaGVzcyBBUEkgZXJyb3I6'), data.error or wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('NpoykqLJoNPqXXqhHvgatYxtTbKwAWXFfUskfxCxZCqrrOxARgVcyMnTm8gbW92ZSBmb3VuZA=='))
+		end
+	else
+		warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('gvVisDAvMKjyPAXeZAhGJfECoYsSbeqpAAtWzcddpDHNKKaHfWHniQkW0VuZ2luZV0gTGljaGVzcyByZXF1ZXN0IGZhaWxlZDo='), err or res.StatusCode)
+	end
+	return nil
+end
+
+function BestMove_Stockfish17(FEN)
+	local res
+	local success, err = pcall(function()
+		res = req({ Url = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('luUErIsgBwzrTOxpPexxJDfVPNVUlCnizbFksRuEjJmLaMUudttKFwxaHR0cHM6Ly9jaGVzcy1hcGkuY29tL3Yx'), Method = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('TjIrzzYkYYGRyvzrJfLzdiFihfFybcHHUPsvrEyJHbHtEYrjYiBsLdEUE9TVA=='), Headers = { [wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('qUFmBkDBlmWTmdZkQFUegbmdDfNfAzZIUpsJOecyCdcsbaPgjphXumMQ29udGVudC1UeXBl')] = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('LVeFVOQtZqljZdoxYVjOprFKqfySljPEkmxrstOMmncLQHAjIslRcQxYXBwbGljYXRpb24vanNvbg==') }, Body = HttpService:JSONEncode({ fen = FEN }) })
+	end)
+	
+	if success and res and res.Success then
+		local data = HttpService:JSONDecode(res.Body)
+		return data.from, data.to
+	else
+		warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('LSgBKIknFhGHGIiFYzdVtBNCulWFTlapnslKkMMbnmwDLcoMImdaoElW0VuZ2luZV0gU3RvY2tmaXNoIHJlcXVlc3QgZmFpbGVkOg=='), err or res.StatusCode)
+	end
+	return nil
+end
+
+function BestMove_NCM(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({ Url = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('YrgvJJfLTyjaAkvUBWJAfwzklaohrxUlEzLtIUHwrqXBCYjzGOIpCsoaHR0cHM6Ly93d3cubmV4dGNoZXNzbW92ZS5jb20vYXBpL3Y0L2NhbGN1bGF0ZT9mZW49') .. HttpService:UrlEncode(FEN), Method = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('HqArzZfrUBNUphNZBOgFodBktxuIbKnjJatavUywXoutcKvcidVTAykR0VU') })
+    end)
+	
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and data.best_move and data.best_move.uci then
+            local uci = data.best_move.uci
+            return uci:sub(1, 2), uci:sub(3, 4)
+        else
+            warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('MZCtqhRVKPDiHjtHgYcnzIielythamHasumLouOdUHxByPYbyNrBlUeW0VuZ2luZV0gTkNNIEFQSSByZXR1cm5lZCBpbnZhbGlkIGRhdGEu'))
+        end
+    else
+        warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('okbnJJdrSucjdHmZJCBCSdaLKFwMwZQvQMGwTJcLpveAeWnEPNBJMfIW0VuZ2luZV0gTkNNIHJlcXVlc3QgZmFpbGVkOg=='), err or res.StatusCode)
+    end
+    return nil
+end
+
+function BestMove_Shredder(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({ Url = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('cPHShCJhmnWxmYZTDKaIEByETGTAHHSdduppGrAIoisvUHVQHRisqrWaHR0cHM6Ly9saWNoZXNzLm9yZy9hcGkvY2xvdWQtZXZhbD9mZW49') .. HttpService:UrlEncode(FEN) .. wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('ieGVnDgTznrlzXpiLKabochxFUFkXcKFpLSLHLmCRrujfdjxvGSAQXLJm11bHRpUHY9MSZ2YXJpYW50PXN0YW5kYXJkJmVuZ2luZT1zaHJlZGRlcg=='), Method = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('WZpLUdFaMqekXQSmBNGTNflKqovgPPgAKFnjuMqHlyLmwDVleHBqcqnR0VU') })
+    end)
+	
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and not data.error and data.pvs and #data.pvs > 0 and data.pvs[1].moves then
+            local uci = data.pvs[1].moves:split(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('CJmamEdLfQDVjlqRLThsKtyijpVfpzkKadSwaUVsnjwyrxneMAefndrIA=='))[1]
+            if uci and #uci >= 4 then
+                print(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('nADAWNzHnoGQmHNpEZlqLUVwrDoduenmGuXCrGWxqlxftVTgIjSnBxUW0VuZ2luZV0gU2hyZWRkZXIgc3VnZ2VzdHMgbW92ZTog') .. uci)
+                return uci:sub(1, 2), uci:sub(3, 4)
+            end
+        else
+            warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('EjtXFAAPdaunnqWopnDEWLaylQMLTVWAdYXHVUyctXcshBeuJtDBCTaW0VuZ2luZV0gU2hyZWRkZXIgYW5hbHlzaXMgbm90IGZvdW5kLg=='))
+        end
+    else
+        warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('tkDYhwgCMOqGcamIWPyHhfUYjHNbnIKUmcPGHnyCeWdDcRZPNbLMnNMW0VuZ2luZV0gU2hyZWRkZXIgKExpY2hlc3MpIHJlcXVlc3QgZmFpbGVkOg=='), err or res.StatusCode)
+    end
+    return nil
+end
+
+function BestMove_LCZero(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({ Url = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('SlVUfbHBrHsKXajphMcPbUqanDsTIPVNjvAFVgHiOlCZTyJnCXFSRAkaHR0cHM6Ly9saWNoZXNzLm9yZy9hcGkvY2xvdWQtZXZhbD9mZW49') .. HttpService:UrlEncode(FEN) .. wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('QmmPJyaSmlhKnWNVRqAuhCpwjVCuJcQbUdiXMcOPCblxTydpoNlPawOJm11bHRpUHY9MSZ2YXJpYW50PXN0YW5kYXJkJmVuZ2luZT1sYzA='), Method = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('pqZpgOuYOoMefPhURHDmBozOyuKNMITlBORKZazgAESGAdSjbDyfridR0VU') })
+    end)
+	
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and not data.error and data.pvs and #data.pvs > 0 and data.pvs[1].moves then
+            local uci = data.pvs[1].moves:split(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('qPsJPSZpEJbFoOsWSVNEiLVzeSHKjiaVuSGjVHVlWUNiFPfCFopOeDmIA=='))[1]
+            if uci and #uci >= 4 then
+                print(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('dYWMgyRAHThpfsdHYthOnrqQdgZhlphdWGwXkgUWnbrHRcyIoTNwAacW0VuZ2luZV0gTENaZXJvIHN1Z2dlc3RzIG1vdmU6IA==') .. uci)
+                return uci:sub(1, 2), uci:sub(3, 4)
+            end
+        else
+            warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('BqnynBBeKuNEbLEUsqiVqtuBQoOrpyzyoLOFoKqgAiUehxTkFSPvRyNW0VuZ2luZV0gTENaZXJvIGFuYWx5c2lzIG5vdCBmb3VuZC4='))
+        end
+    else
+        warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('uqFcpYJiZaPHHGooKYhdHQoAnnqTgfLXbRgLGAZQhOXgGQSBiYVezKUW0VuZ2luZV0gTENaZXJvIChMaWNoZXNzKSByZXF1ZXN0IGZhaWxlZDo='), err or res.StatusCode)
+    end
+    return nil
+end
+
+function BestMove_Sunfish(FEN)
+	local ok, result = pcall(function()
+		return require(game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('AjvwEEesdbvjMItoMscrnbypdBlDEVmUSkbkBVUadAxRhNlVMqMUvwwUGxheWVycw==')).LocalPlayer.PlayerScripts.AI.Sunfish):GetBestMove(FEN, 2000)
+	end)
+	
+	if ok and result then
+		return result
+	else
+		warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('cUgIwcyuFkSHLAoGuzDuLXYVCICbQaBBjebLksqClWsLphifokqamDaW0VuZ2luZV0gU3VuZmlzaCBlbmdpbmUgZmFpbGVkOg=='), result)
+	end
+	return nil
+end
+
+-- ==========================================================
+--                  CORE SYSTEM
+-- ==========================================================
+function BestMove(engine)
+	local FEN = game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('mYYkSWrTDPOrCUNYanMhXVFAvSZqENhJGPxnFjSgIfmTNZwcsOjARyvUmVwbGljYXRlZFN0b3JhZ2U=')).InternalClientEvents.GetActiveTableset:Invoke():WaitForChild(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('lbFlLSDmNrwZgGZGWjichhWoScNhZzlZWSswDAAqmLAYeEoYFBcoKgORkVO')).Value
+	
+	if engine == wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('ewqnqwNFQzWUbjHQqavxKIAOsHJJzADuIEkIgHGEebkVsMofNQTbuYWTGljaGVzcw==') then return BestMove_Lichess(FEN)
+	elseif engine == wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('yOafPHSoUrlFCPNZGdCLocFHPYVatWiKgPjULUxxmRMYvTXwREPcTdiU3RvY2tmaXNoIDE3') then return BestMove_Stockfish17(FEN)
+	elseif engine == wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('MTVbiSAExDOPswfsMxNUvMJbGDjMeASfYQLKfxSYmmQHaGohBtXEAAtTmV4dCBDaGVzcyBNb3Zl') then return BestMove_NCM(FEN)
+	elseif engine == wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('oJozUFsUgvCpxsnXtYhSXjjuIqecckwgnTSUxZNhCoHmsCdkUjzCrpyU2hyZWRkZXI=') then return BestMove_Shredder(FEN)
+	elseif engine == wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('uWgWiFZmAApQaspybSdxfeweYSqMoKUbPAuZQyVbieFWcPoanwsxEEnTGVlbGEgQ2hlc3MgWmVybw==') then return BestMove_LCZero(FEN)
+	elseif engine == wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('tbKbueTHhWFgqsgdTlZHTGqstPEifqiRNxyFCWIncqqKMYnQpxkreZcU3VuZmlzaA==') then
+		local from, to = BestMove_Sunfish(FEN)
+		if to then return from, to end
+		return from
+	end
+	return nil
+end
+
+function PlayMove(engine)
+	local from, to = BestMove(engine)
+	task.wait()
+	
+	if from and to then
+		game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('ApICiZMtzVMFhnnuvnvfifhXliIHKyiSNsUhAejZpvlcBEkpvKpfqFFUmVwbGljYXRlZFN0b3JhZ2U=')).Chess.SubmitMove:InvokeServer(from .. to)
+		return true
+	elseif from then
+		game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('edGQXGOEUMOJRiDNGApFjAILOEgAqoIbNWmrjLTVKKGnZvCJOlgvdmzUmVwbGljYXRlZFN0b3JhZ2U=')).Chess.SubmitMove:InvokeServer(from)
+		return true
+	else
+		warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('PJcoInlJLkeWLCiviNtVxDtRcChWZEpYAHhaeiUtDesmxKrInwDoyEHW01vdmVdIEludmFsaWQgbW92ZSByZWNlaXZlZCBmcm9tIGVuZ2luZSA=')wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('XyaYkKTwQzKVmGLrSfkQNPRNrKQDqAkFCeMOSnwLOVmVmjeeqYRBqYTIC4uIGVuZ2luZSAuLiA=')wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('nZpZIrMzWWlMYIIwFLlqMFotsOSVAfpcQvhVdorAMoiDAUboxgLhTQeLiBDYW5ub3QgcGxheS4='))
+		return false
+	end
+end
+
+function PlayWithFallback()
+	task.spawn(function()
+		local movePlayed, selectedEngine, enginesToTry = false, getgenv().Settings.Engine, {}
+		table.insert(enginesToTry, selectedEngine)
+		for _, engineName in ipairs(getgenv().Info.EnginePriority) do
+			if engineName ~= selectedEngine then table.insert(enginesToTry, engineName) end
+		end
+		
+		for i, engineName in ipairs(enginesToTry) do
+			print(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('METNeqpfBKqrWplhuSRLOlimiOTRROwivEOyuSEDcywUfcOmdYcqWowW1N5c3RlbV0gQXR0ZW1wdGluZyB0byBnZXQgbW92ZSBmcm9tOg=='), engineName)
+			movePlayed = PlayMove(engineName)
+			if movePlayed then
+				if i > 1 then
+					Rayfield:Notify({ Title = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('nmgSaRHprrbHlyNgQcUJIfaIZxofhsMZbhlPFQkKdhllSSjqAMIrLEVRW5naW5lIEZhbGxiYWNr'), Content = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('iAGsMqmzilHWSBVgCxKzupurKPPOzWjxqxQdUZPgXJZLPYiRZSThCEjVXNpbmcg')wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('mUfIqDDlOSnCDBRINxZrtHKAzgfExoONnahNPGxzHDKEsIpVanQcyLRLi5lbmdpbmVOYW1lLi4=')wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('LwdFZJpkxWEPcLGCdglORdoZFiHwUigdRwhYtpBjQgDUjRUtrOJZgdHIGZvciB0aGlzIG1vdmUu'), Duration = 6, Image = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('vrwdDjzMRAyVKAXAkHANABtlquQVCfBvCMLMuJxfnhxcLRkeUtanurocmJ4YXNzZXRpZDovLzQzMjQyNDEzNDk=') })
+				end
+				break
+			end
+		end
+		if not movePlayed then
+			warn(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('wFxnRjQESJVLMnkTGPPzPELLejXYIzkQJcqJplbggSwnelHSyeQnfsXW0ZBVEFMXSBBbGwgZW5naW5lcyBmYWlsZWQgdG8gcHJvdmlkZSBhIHZhbGlkIG1vdmUu'))
+			Rayfield:Notify({ Title = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('vTFOlbAqtWUzgwqQZxHHAKMMGPJlISYXYnFVxmhxuHvuPkyKvgPTFIhRXJyb3Ih'), Content = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('ePUakedkwstZFzNsVqrudjDLLjhTYKFWxQGoEHseTEYgpVOPNJSnlxHQWxsIGVuZ2luZXMgZmFpbGVkIHRvIHJlc3BvbmQu'), Duration = 8, Image = wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('EDkoWNdIzmZUXnHRdRkdHbCNyFwcbJLeWDpMWCnFYyuJTXqGSMHRpoecmJ4YXNzZXRpZDovLzQzMjQyNDEzNTM=') })
+		end
+	end)
+end
+
+function AutoPlay()
+	if not getgenv().Settings.AutoPlay then return end
+	
+	DisconnectAll(getgenv().Info.Connections)
+	getgenv().Info.Connections[wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('pzaipREhTmfKcUQUcHndsLIvLxCxdAPtMfPRXXcnZgJTcobuxGbcCNVTW92ZVJlY2lldmVk')] = game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('pCjjqbdOFWPYypVrOntBxqGttLdnwIkQWzTswWkUEreTlWrrcxSTtnCUmVwbGljYXRlZFN0b3JhZ2U=')).Chess.MovePlayedRemoteEvent.OnClientEvent:Connect(PlayWithFallback)
+	getgenv().Info.Connections[wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('KLBCwmufLCeSKGdfYQiEUwTkvfyWRYbDwBQKGjgeJQUBkMqQDBhTeagR2FtZVN0YXJ0')] = game:GetService(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('HbaJSBiKQRWryRrfTCopjHmYgKcbugyydJHDOLJYxwyhzCOsEANkVINUmVwbGljYXRlZFN0b3JhZ2U=')).Chess:WaitForChild(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('mzzyTzRMLmjCyLAunOmQcwfOFuUrPIuwSxbBpAPtpaQsEiPpRJqcFoVU3RhcnRHYW1lRXZlbnQ=')).OnClientEvent:Connect(PlayWithFallback)
+	PlayWithFallback()
+end
+
+-- ==========================================================
+--                  USER INTERFACE (RAYFIELD - Perfected)
+-- ==========================================================
+local MainTab = Window:CreateTab(wkaSMnoSxKiBLHnosxIHKfvfijfsMqWySWMczmNtpzixkEMJUecHPNpzCMwBUMIVqyDeTOJRLe('DVDpyyzGzqgWSrBLSTAufnz
