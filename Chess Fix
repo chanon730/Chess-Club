@@ -1,0 +1,425 @@
+repeat task.wait() until game:IsLoaded()
+
+if game.PlaceId ~= 139394516128799 then return end
+
+local req = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local HttpService = game:GetService("HttpService")
+
+-- Disconnect all connections
+function DisconnectAll(connections)
+    task.spawn(function()
+        for i, connection in pairs(connections) do
+            if connection then 
+                connection:Disconnect()
+                connections[i] = nil
+            end
+        end
+    end)
+end
+
+if getgenv().Info and getgenv().Info.Connections then
+    DisconnectAll(getgenv().Info.Connections)
+end
+
+-- [MULTIVERSE UPDATE] เพิ่ม AI ใหม่ทั้งหมด! ตอนนี้เรามี 9 ตัวเลือก!
+getgenv().Info = {
+    EngineOptions = {
+        "Lichess", "Stockfish 17", "Leela Chess Zero", "Next Chess Move",
+        "Shredder", "Chess Studio - Attacker", "Chess Studio - Positional",
+        "Chess Studio", "Sunfish"
+    },
+    EnginePriority = {
+        "Lichess", "Leela Chess Zero", "Next Chess Move", "Stockfish 17",
+        "Shredder", "Chess Studio - Attacker", "Chess Studio - Positional",
+        "Chess Studio", "Sunfish"
+    },
+    Connections = {},
+}
+
+getgenv().Settings = { AutoPlay = false, Engine = "Lichess" }
+
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+local Window = Rayfield:CreateWindow({
+    Name = "Chess Universe",
+    Icon = 0,
+    LoadingTitle = "Chess Multiverse - AI Infinity",
+    LoadingSubtitle = "by Shrx & Us",
+    Theme = "Default",
+    ToggleUIKeybind = "K",
+    ConfigurationSaving = { Enabled = true, FileName = "ChessUniverse" }
+})
+
+-- ==========================================================
+--                  ENGINE API FUNCTIONS
+-- ==========================================================
+
+function BestMove_Lichess(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({
+            Url = "https://lichess.org/api/cloud-eval?fen=" .. HttpService:UrlEncode(FEN),
+            Method = "GET"
+        })
+    end)
+    
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and not data.error and data.pvs and #data.pvs > 0 and data.pvs[1].moves then
+            local uci = data.pvs[1].moves:split(" ")[1]
+            if uci and #uci >= 4 then
+                return uci:sub(1,2), uci:sub(3,4)
+            end
+        else
+            warn("[Engine] Lichess API error:", data.error or "No move found")
+        end
+    else
+        warn("[Engine] Lichess request failed:", err or res.StatusCode)
+    end
+    
+    return nil
+end
+
+function BestMove_Stockfish17(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({
+            Url = "https://chess-api.com/v1",
+            Method = "POST",
+            Headers = { ["Content-Type"] = "application/json" },
+            Body = HttpService:JSONEncode({ fen = FEN })
+        })
+    end)
+
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        return data.from, data.to
+    else
+        warn("[Engine] Stockfish request failed:", err or res.StatusCode)
+    end
+
+    return nil
+end
+
+function BestMove_NCM(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({
+            Url = "https://www.nextchessmove.com/api/v4/calculate?fen=" .. HttpService:UrlEncode(FEN),
+            Method = "GET"
+        })
+    end)
+
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and data.best_move and data.best_move.uci then
+            local uci = data.best_move.uci
+            return uci:sub(1,2), uci:sub(3,4)
+        else
+            warn("[Engine] NCM API returned invalid data.")
+        end
+    else
+        warn("[Engine] NCM request failed:", err or res.StatusCode)
+    end
+
+    return nil
+end
+
+function BestMove_Shredder(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({
+            Url = "https://lichess.org/api/cloud-eval?fen=" .. HttpService:UrlEncode(FEN) ..
+                  "&multiPv=1&variant=standard&engine=shredder",
+            Method = "GET"
+        })
+    end)
+
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and not data.error and data.pvs and #data.pvs > 0 and data.pvs[1].moves then
+            local uci = data.pvs[1].moves:split(" ")[1]
+            if uci and #uci >= 4 then
+                print("[Engine] Shredder suggests move: " .. uci)
+                return uci:sub(1,2), uci:sub(3,4)
+            end
+        else
+            warn("[Engine] Shredder analysis not found.")
+        end
+    else
+        warn("[Engine] Shredder (Lichess) request failed:", err or res.StatusCode)
+    end
+
+    return nil
+end
+
+function BestMove_LCZero(FEN)
+    local res
+    local success, err = pcall(function()
+        res = req({
+            Url = "https://lichess.org/api/cloud-eval?fen=" .. HttpService:UrlEncode(FEN) ..
+                  "&multiPv=1&variant=standard&engine=lc0",
+            Method = "GET"
+        })
+    end)
+
+    if success and res and res.Success then
+        local data = HttpService:JSONDecode(res.Body)
+        if data and not data.error and data.pvs and #data.pvs > 0 and data.pvs[1].moves then
+            local uci = data.pvs[1].moves:split(" ")[1]
+            if uci and #uci >= 4 then
+                print("[Engine] LCZero suggests move: " .. uci)
+                return uci:sub(1,2), uci:sub(3,4)
+            end
+        else
+            warn("[Engine] LCZero analysis not found.")
+        end
+    else
+        warn("[Engine] LCZero (Lichess) request failed:", err or res.StatusCode)
+    end
+
+    return nil
+end
+
+-- Chess Studio Engine (Core Logic)
+local pieceValues_CS = {p=10,n=30,b=30,r=50,q=90,k=900,P=10,N=30,B=30,R=50,Q=90,K=900}
+
+function FEN_to_Board_CS(fen)
+    local board, fenParts, boardFen, turn, row, col = {}, fen:split(" "), fen:sub(1, fen:find(" ")-1), fen:split(" ")[2], 1, 1
+    for i=1,8 do board[i] = {} end
+    for i=1,#boardFen do
+        local char = boardFen:sub(i,i)
+        if char == "/" then
+            row, col = row+1, 1
+        elseif tonumber(char) then
+            col = col + tonumber(char)
+        else
+            board[row][col] = char
+            col = col + 1
+        end
+    end
+    return board, turn
+end
+
+function ToChessNotation_CS(row, col)
+    return string.char(string.byte('a')+col-1) .. tostring(9-row)
+end
+
+function isOpponent_CS(piece, whoseTurn)
+    if not piece then return false end
+    local isWhitePiece = piece == string.upper(piece)
+    return (whoseTurn=='w' and not isWhitePiece) or (whoseTurn=='b' and isWhitePiece)
+end
+
+function GenerateAllPossibleMoves_CS(board, whoseTurn)
+    local allMoves, directions = {}, {rook={{0,1},{0,-1},{1,0},{-1,0}}, bishop={{1,1},{1,-1},{-1,1},{-1,-1}}, knight={{2,1},{2,-1},{-2,1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}}}
+    directions.queen, directions.king = {}, {}
+    table.move(directions.rook, 1, #directions.rook, #directions.queen+1, directions.bishop)
+    directions.king = directions.queen
+
+    for r=1,8 do
+        for c=1,8 do
+            local piece = board[r][c]
+            if piece and not isOpponent_CS(piece, whoseTurn) then
+                local pieceType = string.lower(piece)
+
+                -- Sliding pieces
+                if pieceType=='r' or pieceType=='b' or pieceType=='q' then
+                    for _, dir in ipairs(directions[pieceType]) do
+                        for i=1,7 do
+                            local newR, newC = r + dir[1]*i, c + dir[2]*i
+                            if newR>=1 and newR<=8 and newC>=1 and newC<=8 then
+                                local targetPiece = board[newR][newC]
+                                if not targetPiece then
+                                    table.insert(allMoves, {from={r,c}, to={newR,newC}})
+                                elseif isOpponent_CS(targetPiece, whoseTurn) then
+                                    table.insert(allMoves, {from={r,c}, to={newR,newC}})
+                                    break
+                                else
+                                    break
+                                end
+                            else
+                                break
+                            end
+                        end
+                    end
+                end
+
+                -- Knight & King moves
+                if pieceType=='n' or pieceType=='k' then
+                    local moveSet = (pieceType=='n') and directions.knight or directions.king
+                    for _, move in ipairs(moveSet) do
+                        local newR, newC = r+move[1], c+move[2]
+                        if newR>=1 and newR<=8 and newC>=1 and newC<=8 then
+                            if not board[newR][newC] or isOpponent_CS(board[newR][newC], whoseTurn) then
+                                table.insert(allMoves, {from={r,c}, to={newR,newC}})
+                            end
+                        end
+                    end
+                end
+
+                -- Pawn moves
+                if pieceType=='p' then
+                    local dir, startRow = (whoseTurn=='w') and -1 or 1, (whoseTurn=='w') and 7 or 2
+                    if not board[r+dir][c] then
+                        table.insert(allMoves, {from={r,c}, to={r+dir,c}})
+                        if r == startRow and not board[r+2*dir][c] then
+                            table.insert(allMoves, {from={r,c}, to={r+2*dir,c}})
+                        end
+                    end
+                    for _, captureCol in ipairs({c-1, c+1}) do
+                        if captureCol >= 1 and captureCol <= 8 then
+                            if isOpponent_CS(board[r+dir][captureCol], whoseTurn) then
+                                table.insert(allMoves, {from={r,c}, to={r+dir,captureCol}})
+                            end
+                        end
+                    end
+                end
+
+            end
+        end
+    end
+
+    return allMoves
+end
+
+-- Chess Studio "Greedy"
+function BestMove_ChessStudio(FEN)
+    local board, whoseTurn = FEN_to_Board_CS(FEN)
+    local allPossibleMoves = GenerateAllPossibleMoves_CS(board, whoseTurn)
+    if #allPossibleMoves == 0 then return nil end
+
+    local bestMove, bestScore = nil, -1
+    for _, move in ipairs(allPossibleMoves) do
+        local targetPiece, currentScore = board[move.to[1]][move.to[2]], 0
+        if targetPiece then currentScore = pieceValues_CS[targetPiece] or 0 end
+        if currentScore > bestScore then
+            bestScore, bestMove = currentScore, move
+        end
+    end
+
+    if not bestMove then
+        bestMove = allPossibleMoves[math.random(1,#allPossibleMoves)]
+    end
+
+    local from, to = ToChessNotation_CS(bestMove.from[1], bestMove.from[2]), ToChessNotation_CS(bestMove.to[1], bestMove.to[2])
+    print("[Chess Studio] Move: "..from.." to "..to)
+    return from, to
+end
+
+-- Chess Studio Attacker
+function BestMove_ChessStudio_Attacker(FEN)
+    local board, whoseTurn = FEN_to_Board_CS(FEN)
+    local allPossibleMoves = GenerateAllPossibleMoves_CS(board, whoseTurn)
+    if #allPossibleMoves == 0 then return nil end
+
+    local bestMove, bestScore = nil, -1
+    for _, move in ipairs(allPossibleMoves) do
+        local targetPiece, currentScore = board[move.to[1]][move.to[2]], 0
+        if targetPiece then currentScore = (pieceValues_CS[targetPiece] or 0) + 5 end
+        if currentScore > bestScore then bestScore, bestMove = currentScore, move end
+    end
+
+    if not bestMove then bestMove = allPossibleMoves[math.random(1,#allPossibleMoves)] end
+    local from, to = ToChessNotation_CS(bestMove.from[1], bestMove.from[2]), ToChessNotation_CS(bestMove.to[1], bestMove.to[2])
+    print("[CS Attacker] Move: "..from.." to "..to)
+    return from, to
+end
+
+-- Chess Studio Positional
+function BestMove_ChessStudio_Positional(FEN)
+    local board, whoseTurn = FEN_to_Board_CS(FEN)
+    local allPossibleMoves = GenerateAllPossibleMoves_CS(board, whoseTurn)
+    if #allPossibleMoves == 0 then return nil end
+
+    local bestMove, bestScore = nil, -1
+    local center = {d4=true,e4=true,d5=true,e5=true}
+
+    for _, move in ipairs(allPossibleMoves) do
+        local targetPiece, currentScore = board[move.to[1]][move.to[2]], 0
+        if targetPiece then currentScore = pieceValues_CS[targetPiece] or 0 end
+        local toNotation = ToChessNotation_CS(move.to[1], move.to[2])
+        if center[toNotation] then currentScore = currentScore + 3 end
+        if currentScore > bestScore then bestScore, bestMove = currentScore, move end
+    end
+
+    if not bestMove then bestMove = allPossibleMoves[math.random(1,#allPossibleMoves)] end
+    local from, to = ToChessNotation_CS(bestMove.from[1], bestMove.from[2]), ToChessNotation_CS(bestMove.to[1], bestMove.to[2])
+    print("[CS Positional] Move: "..from.." to "..to)
+    return from, to
+end
+
+-- Sunfish Engine
+function BestMove_Sunfish(FEN)
+    local ok, result = pcall(function()
+        return require(game:GetService("Players").LocalPlayer.PlayerScripts.AI.Sunfish):GetBestMove(FEN,2000)
+    end)
+    if ok and result then return result else warn("[Engine] Sunfish engine failed:", result) end
+    return nil
+end
+
+-- ==========================================================
+--                  CORE SYSTEM
+-- ==========================================================
+
+function BestMove(engine)
+    local FEN = game:GetService("ReplicatedStorage").InternalClientEvents.GetActiveTableset:Invoke():WaitForChild("FEN").Value
+    if engine == "Lichess" then return BestMove_Lichess(FEN)
+    elseif engine == "Stockfish 17" then return BestMove_Stockfish17(FEN)
+    elseif engine == "Next Chess Move" then return BestMove_NCM(FEN)
+    elseif engine == "Shredder" then return BestMove_Shredder(FEN)
+    elseif engine == "Leela Chess Zero" then return BestMove_LCZero(FEN)
+    elseif engine == "Chess Studio" then return BestMove_ChessStudio(FEN)
+    elseif engine == "Chess Studio - Attacker" then return BestMove_ChessStudio_Attacker(FEN)
+    elseif engine == "Chess Studio - Positional" then return BestMove_ChessStudio_Positional(FEN)
+    elseif engine == "Sunfish" then
+        local from,to = BestMove_Sunfish(FEN)
+        if to then return from,to end
+        return from
+    end
+    return nil
+end
+
+function PlayMove(engine)
+    local from, to = BestMove(engine)
+    task.wait()
+    if from and to then
+        game:GetService("ReplicatedStorage").Chess.SubmitMove:InvokeServer(from..to)
+        return true
+    elseif from then
+        game:GetService("ReplicatedStorage").Chess.SubmitMove:InvokeServer(from)
+        return true
+    else
+        warn("[Move] Invalid move from engine '"..engine.."'." )
+        return false
+    end
+end
+
+function PlayWithFallback()
+    task.spawn(function()
+        local movePlayed = false
+        local selectedEngine = getgenv().Settings.Engine
+        local enginesToTry = {selectedEngine}
+
+        for _, engineName in ipairs(getgenv().Info.EnginePriority) do
+            if engineName ~= selectedEngine then table.insert(enginesToTry, engineName) end
+        end
+
+        for i, engineName in ipairs(enginesToTry) do
+            print("[System] Attempting move from:", engineName)
+            movePlayed = PlayMove(engineName)
+            if movePlayed then
+                if i > 1 then
+                    Rayfield:Notify({Title="Engine Fallback", Content="Using '"..engineName.."' for this move.", Duration=6, Image="rbxassetid://4324241349"})
+                end
+                break
+            end
+        end
+
+        if not movePlayed then
+            warn("[FATAL] All engines failed.")
+            Rayfield:Notify({Title="Error!", Content="All engines failed to respond.", Duration=8, Image="rbxassetid://4324241353"})
+        end
+    end)
+end
+
+function AutoPlay()
