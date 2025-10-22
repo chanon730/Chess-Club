@@ -1,0 +1,587 @@
+-- 🌟 ADVANCED ADMIN UNIVERSE SCRIPT
+-- Created by Claude | Premium Admin System
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local Player = Players.LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+
+-- 🎨 Theme Colors
+local Themes = {
+    Dark = {
+        Primary = Color3.fromRGB(25, 25, 35),
+        Secondary = Color3.fromRGB(35, 35, 50),
+        Accent = Color3.fromRGB(138, 43, 226),
+        Text = Color3.fromRGB(255, 255, 255),
+        Glow = Color3.fromRGB(186, 85, 211)
+    },
+    Neon = {
+        Primary = Color3.fromRGB(15, 15, 25),
+        Secondary = Color3.fromRGB(25, 25, 40),
+        Accent = Color3.fromRGB(0, 255, 255),
+        Text = Color3.fromRGB(255, 255, 255),
+        Glow = Color3.fromRGB(0, 255, 255)
+    },
+    Galaxy = {
+        Primary = Color3.fromRGB(20, 0, 40),
+        Secondary = Color3.fromRGB(40, 0, 60),
+        Accent = Color3.fromRGB(255, 0, 255),
+        Text = Color3.fromRGB(255, 255, 255),
+        Glow = Color3.fromRGB(255, 100, 255)
+    }
+}
+
+local CurrentTheme = Themes.Dark
+
+-- 🎯 Create Main GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "AdminUniverseGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = PlayerGui
+
+-- 🌟 Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 650, 0, 450)
+MainFrame.Position = UDim2.new(0.5, -325, 0.5, -225)
+MainFrame.BackgroundColor3 = CurrentTheme.Primary
+MainFrame.BorderSizePixel = 0
+MainFrame.ClipsDescendants = true
+MainFrame.Parent = ScreenGui
+
+-- ✨ Add Corner Radius
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 15)
+MainCorner.Parent = MainFrame
+
+-- 🎆 Glow Effect
+local Glow = Instance.new("ImageLabel")
+Glow.Name = "Glow"
+Glow.Size = UDim2.new(1, 40, 1, 40)
+Glow.Position = UDim2.new(0, -20, 0, -20)
+Glow.BackgroundTransparency = 1
+Glow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+Glow.ImageColor3 = CurrentTheme.Glow
+Glow.ImageTransparency = 0.7
+Glow.ScaleType = Enum.ScaleType.Slice
+Glow.SliceCenter = Rect.new(10, 10, 118, 118)
+Glow.Parent = MainFrame
+
+-- 🌈 Animated Border
+local Border = Instance.new("Frame")
+Border.Name = "Border"
+Border.Size = UDim2.new(1, 4, 1, 4)
+Border.Position = UDim2.new(0, -2, 0, -2)
+Border.BackgroundTransparency = 1
+Border.Parent = MainFrame
+
+local BorderGradient = Instance.new("UIGradient")
+BorderGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, CurrentTheme.Accent),
+    ColorSequenceKeypoint.new(0.5, CurrentTheme.Glow),
+    ColorSequenceKeypoint.new(1, CurrentTheme.Accent)
+}
+BorderGradient.Rotation = 0
+BorderGradient.Parent = Border
+
+-- Animate Border
+spawn(function()
+    while wait(0.05) do
+        if Border and BorderGradient then
+            BorderGradient.Rotation = (BorderGradient.Rotation + 2) % 360
+        end
+    end
+end)
+
+-- 📋 Top Bar
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Size = UDim2.new(1, 0, 0, 50)
+TopBar.BackgroundColor3 = CurrentTheme.Secondary
+TopBar.BorderSizePixel = 0
+TopBar.Parent = MainFrame
+
+local TopBarCorner = Instance.new("UICorner")
+TopBarCorner.CornerRadius = UDim.new(0, 15)
+TopBarCorner.Parent = TopBar
+
+local TopBarBottom = Instance.new("Frame")
+TopBarBottom.Size = UDim2.new(1, 0, 0, 15)
+TopBarBottom.Position = UDim2.new(0, 0, 1, -15)
+TopBarBottom.BackgroundColor3 = CurrentTheme.Secondary
+TopBarBottom.BorderSizePixel = 0
+TopBarBottom.Parent = TopBar
+
+-- 👑 Title
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Size = UDim2.new(0, 300, 1, 0)
+Title.Position = UDim2.new(0, 15, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "⚡ ADMIN UNIVERSE"
+Title.TextColor3 = CurrentTheme.Text
+Title.TextSize = 24
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Font = Enum.Font.GothamBold
+Title.Parent = TopBar
+
+-- 🎨 Theme Buttons
+local function CreateThemeButton(name, position, theme)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0, 30, 0, 30)
+    btn.Position = position
+    btn.BackgroundColor3 = theme.Accent
+    btn.BorderSizePixel = 0
+    btn.Text = ""
+    btn.Parent = TopBar
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = btn
+    
+    btn.MouseButton1Click:Connect(function()
+        CurrentTheme = theme
+        MainFrame.BackgroundColor3 = theme.Primary
+        TopBar.BackgroundColor3 = theme.Secondary
+        TopBarBottom.BackgroundColor3 = theme.Secondary
+        Glow.ImageColor3 = theme.Glow
+        -- Update all UI elements with new theme
+    end)
+    
+    return btn
+end
+
+CreateThemeButton("Dark", UDim2.new(1, -120, 0.5, -15), Themes.Dark)
+CreateThemeButton("Neon", UDim2.new(1, -80, 0.5, -15), Themes.Neon)
+CreateThemeButton("Galaxy", UDim2.new(1, -40, 0.5, -15), Themes.Galaxy)
+
+-- ❌ Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Position = UDim2.new(1, -140, 0.5, -15)
+CloseButton.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
+CloseButton.BorderSizePixel = 0
+CloseButton.Text = "✕"
+CloseButton.TextColor3 = Color3.white
+CloseButton.TextSize = 20
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.Parent = TopBar
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(1, 0)
+CloseCorner.Parent = CloseButton
+
+CloseButton.MouseButton1Click:Connect(function()
+    MainFrame:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Back", 0.5, true)
+    wait(0.5)
+    ScreenGui:Destroy()
+end)
+
+-- 📱 Category Panel
+local CategoryPanel = Instance.new("Frame")
+CategoryPanel.Name = "CategoryPanel"
+CategoryPanel.Size = UDim2.new(0, 150, 1, -60)
+CategoryPanel.Position = UDim2.new(0, 10, 0, 60)
+CategoryPanel.BackgroundColor3 = CurrentTheme.Secondary
+CategoryPanel.BorderSizePixel = 0
+CategoryPanel.Parent = MainFrame
+
+local CategoryCorner = Instance.new("UICorner")
+CategoryCorner.CornerRadius = UDim.new(0, 10)
+CategoryCorner.Parent = CategoryPanel
+
+local CategoryList = Instance.new("UIListLayout")
+CategoryList.Padding = UDim.new(0, 5)
+CategoryList.Parent = CategoryPanel
+
+-- 🎯 Content Panel
+local ContentPanel = Instance.new("ScrollingFrame")
+ContentPanel.Name = "ContentPanel"
+ContentPanel.Size = UDim2.new(1, -175, 1, -70)
+ContentPanel.Position = UDim2.new(0, 165, 0, 60)
+ContentPanel.BackgroundColor3 = CurrentTheme.Secondary
+ContentPanel.BorderSizePixel = 0
+ContentPanel.ScrollBarThickness = 6
+ContentPanel.ScrollBarImageColor3 = CurrentTheme.Accent
+ContentPanel.Parent = MainFrame
+
+local ContentCorner = Instance.new("UICorner")
+ContentCorner.CornerRadius = UDim.new(0, 10)
+ContentCorner.Parent = ContentPanel
+
+local ContentGrid = Instance.new("UIGridLayout")
+ContentGrid.CellSize = UDim2.new(0, 140, 0, 100)
+ContentGrid.CellPadding = UDim2.new(0, 10, 0, 10)
+ContentGrid.Parent = ContentPanel
+
+-- 🎮 Admin Commands Database
+local AdminCommands = {
+    Player = {
+        {name = "God Mode", icon = "🛡️", desc = "Become invincible"},
+        {name = "Fly", icon = "✈️", desc = "Enable flight"},
+        {name = "Speed", icon = "⚡", desc = "Increase walkspeed"},
+        {name = "Teleport", icon = "🌀", desc = "Teleport anywhere"},
+        {name = "Invisible", icon = "👻", desc = "Become invisible"},
+        {name = "Reset", icon = "🔄", desc = "Reset character"}
+    },
+    World = {
+        {name = "Day", icon = "☀️", desc = "Set time to day"},
+        {name = "Night", icon = "🌙", desc = "Set time to night"},
+        {name = "Fog", icon = "🌫️", desc = "Toggle fog"},
+        {name = "Clear", icon = "✨", desc = "Clear workspace"},
+        {name = "Ambient", icon = "🎨", desc = "Change lighting"},
+        {name = "Gravity", icon = "🪐", desc = "Change gravity"}
+    },
+    Fun = {
+        {name = "Fireworks", icon = "🎆", desc = "Spawn fireworks"},
+        {name = "Rainbow", icon = "🌈", desc = "Rainbow character"},
+        {name = "Big Head", icon = "😂", desc = "Enlarge head"},
+        {name = "Sparkles", icon = "✨", desc = "Add sparkles"},
+        {name = "Fire", icon = "🔥", desc = "Add fire effect"},
+        {name = "Smoke", icon = "💨", desc = "Add smoke effect"}
+    },
+    Tools = {
+        {name = "Btools", icon = "🔨", desc = "Building tools"},
+        {name = "Sword", icon = "⚔️", desc = "Spawn sword"},
+        {name = "Bomb", icon = "💣", desc = "Spawn bomb"},
+        {name = "Gun", icon = "🔫", desc = "Spawn gun"},
+        {name = "Rocket", icon = "🚀", desc = "Rocket launcher"},
+        {name = "Shield", icon = "🛡️", desc = "Spawn shield"}
+    },
+    Server = {
+        {name = "Kick All", icon = "👢", desc = "Kick all players"},
+        {name = "Shutdown", icon = "⚠️", desc = "Shutdown server"},
+        {name = "Message", icon = "💬", desc = "Server message"},
+        {name = "Freeze", icon = "❄️", desc = "Freeze all"},
+        {name = "Unfreeze", icon = "🔥", desc = "Unfreeze all"},
+        {name = "Explode", icon = "💥", desc = "Explode all"}
+    }
+}
+
+-- 🎨 Create Category Button
+local function CreateCategoryButton(categoryName, icon, index)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, -10, 0, 50)
+    button.Position = UDim2.new(0, 5, 0, (index - 1) * 55)
+    button.BackgroundColor3 = CurrentTheme.Primary
+    button.BorderSizePixel = 0
+    button.Text = icon .. " " .. categoryName
+    button.TextColor3 = CurrentTheme.Text
+    button.TextSize = 16
+    button.Font = Enum.Font.GothamBold
+    button.Parent = CategoryPanel
+    
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.CornerRadius = UDim.new(0, 8)
+    btnCorner.Parent = button
+    
+    local highlight = Instance.new("Frame")
+    highlight.Size = UDim2.new(0, 4, 1, 0)
+    highlight.BackgroundColor3 = CurrentTheme.Accent
+    highlight.BorderSizePixel = 0
+    highlight.BackgroundTransparency = 1
+    highlight.Parent = button
+    
+    button.MouseButton1Click:Connect(function()
+        -- Clear content
+        for _, child in pairs(ContentPanel:GetChildren()) do
+            if child:IsA("Frame") then
+                child:Destroy()
+            end
+        end
+        
+        -- Load commands for category
+        local commands = AdminCommands[categoryName]
+        if commands then
+            for _, cmd in pairs(commands) do
+                CreateCommandButton(cmd)
+            end
+        end
+        
+        -- Highlight animation
+        highlight:TweenSize(UDim2.new(0, 4, 1, 0), "Out", "Quad", 0.3, true)
+        TweenService:Create(highlight, TweenInfo.new(0.3), {BackgroundTransparency = 0}):Play()
+    end)
+    
+    button.MouseEnter:Connect(function()
+        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = CurrentTheme.Secondary}):Play()
+    end)
+    
+    button.MouseLeave:Connect(function()
+        TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = CurrentTheme.Primary}):Play()
+    end)
+    
+    return button
+end
+
+-- ⚡ Create Command Button
+local function CreateCommandButton(commandData)
+    local cmdFrame = Instance.new("Frame")
+    cmdFrame.Size = UDim2.new(0, 140, 0, 100)
+    cmdFrame.BackgroundColor3 = CurrentTheme.Primary
+    cmdFrame.BorderSizePixel = 0
+    cmdFrame.Parent = ContentPanel
+    
+    local cmdCorner = Instance.new("UICorner")
+    cmdCorner.CornerRadius = UDim.new(0, 10)
+    cmdCorner.Parent = cmdFrame
+    
+    local iconLabel = Instance.new("TextLabel")
+    iconLabel.Size = UDim2.new(1, 0, 0, 40)
+    iconLabel.BackgroundTransparency = 1
+    iconLabel.Text = commandData.icon
+    iconLabel.TextSize = 32
+    iconLabel.Parent = cmdFrame
+    
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Size = UDim2.new(1, -10, 0, 25)
+    nameLabel.Position = UDim2.new(0, 5, 0, 45)
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Text = commandData.name
+    nameLabel.TextColor3 = CurrentTheme.Text
+    nameLabel.TextSize = 14
+    nameLabel.Font = Enum.Font.GothamBold
+    nameLabel.TextWrapped = true
+    nameLabel.Parent = cmdFrame
+    
+    local descLabel = Instance.new("TextLabel")
+    descLabel.Size = UDim2.new(1, -10, 0, 20)
+    descLabel.Position = UDim2.new(0, 5, 0, 72)
+    descLabel.BackgroundTransparency = 1
+    descLabel.Text = commandData.desc
+    descLabel.TextColor3 = CurrentTheme.Text
+    descLabel.TextSize = 10
+    descLabel.Font = Enum.Font.Gotham
+    descLabel.TextTransparency = 0.5
+    descLabel.TextWrapped = true
+    descLabel.Parent = cmdFrame
+    
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, 0, 1, 0)
+    button.BackgroundTransparency = 1
+    button.Text = ""
+    button.Parent = cmdFrame
+    
+    -- Hover effect
+    button.MouseEnter:Connect(function()
+        TweenService:Create(cmdFrame, TweenInfo.new(0.2), {
+            BackgroundColor3 = CurrentTheme.Accent,
+            Size = UDim2.new(0, 145, 0, 105)
+        }):Play()
+    end)
+    
+    button.MouseLeave:Connect(function()
+        TweenService:Create(cmdFrame, TweenInfo.new(0.2), {
+            BackgroundColor3 = CurrentTheme.Primary,
+            Size = UDim2.new(0, 140, 0, 100)
+        }):Play()
+    end)
+    
+    -- Command execution
+    button.MouseButton1Click:Connect(function()
+        ExecuteCommand(commandData.name)
+        
+        -- Click animation
+        local originalSize = cmdFrame.Size
+        cmdFrame:TweenSize(UDim2.new(0, 135, 0, 95), "Out", "Quad", 0.1, true, function()
+            cmdFrame:TweenSize(originalSize, "Out", "Elastic", 0.3, true)
+        end)
+    end)
+end
+
+-- 🚀 Command Execution System
+function ExecuteCommand(commandName)
+    local char = Player.Character
+    if not char then return end
+    
+    -- Show notification
+    CreateNotification("⚡ Executing: " .. commandName)
+    
+    if commandName == "God Mode" then
+        local humanoid = char:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.MaxHealth = math.huge
+            humanoid.Health = math.huge
+        end
+        
+    elseif commandName == "Fly" then
+        -- Flying system
+        local flying = false
+        local speed = 50
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        bodyVelocity.MaxForce = Vector3.new(0, 0, 0)
+        bodyVelocity.Parent = char.HumanoidRootPart
+        
+        local bodyGyro = Instance.new("BodyGyro")
+        bodyGyro.MaxTorque = Vector3.new(0, 0, 0)
+        bodyGyro.Parent = char.HumanoidRootPart
+        
+        flying = not flying
+        
+        if flying then
+            bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+            bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        else
+            bodyVelocity.MaxForce = Vector3.new(0, 0, 0)
+            bodyGyro.MaxTorque = Vector3.new(0, 0, 0)
+        end
+        
+    elseif commandName == "Speed" then
+        local humanoid = char:FindFirstChild("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 100
+        end
+        
+    elseif commandName == "Invisible" then
+        for _, part in pairs(char:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.Transparency = 1
+            end
+        end
+        
+    elseif commandName == "Day" then
+        game.Lighting.ClockTime = 12
+        
+    elseif commandName == "Night" then
+        game.Lighting.ClockTime = 0
+        
+    elseif commandName == "Rainbow" then
+        spawn(function()
+            while wait(0.1) do
+                for _, part in pairs(char:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                    end
+                end
+            end
+        end)
+        
+    elseif commandName == "Fireworks" then
+        for i = 1, 10 do
+            local firework = Instance.new("Part")
+            firework.Size = Vector3.new(1, 1, 1)
+            firework.Position = char.HumanoidRootPart.Position + Vector3.new(math.random(-10, 10), 20, math.random(-10, 10))
+            firework.Anchored = true
+            firework.BrickColor = BrickColor.Random()
+            firework.Material = Enum.Material.Neon
+            firework.Shape = Enum.PartType.Ball
+            firework.Parent = workspace
+            
+            local explosion = Instance.new("Explosion")
+            explosion.Position = firework.Position
+            explosion.BlastRadius = 10
+            explosion.BlastPressure = 0
+            explosion.Parent = workspace
+            
+            game.Debris:AddItem(firework, 2)
+        end
+        
+    elseif commandName == "Sparkles" then
+        local sparkles = Instance.new("Sparkles")
+        sparkles.Parent = char.HumanoidRootPart
+        
+    elseif commandName == "Fire" then
+        local fire = Instance.new("Fire")
+        fire.Parent = char.HumanoidRootPart
+        
+    elseif commandName == "Reset" then
+        char:BreakJoints()
+    end
+end
+
+-- 💬 Notification System
+function CreateNotification(text)
+    local notif = Instance.new("Frame")
+    notif.Size = UDim2.new(0, 300, 0, 60)
+    notif.Position = UDim2.new(1, 320, 0, 20)
+    notif.BackgroundColor3 = CurrentTheme.Secondary
+    notif.BorderSizePixel = 0
+    notif.Parent = ScreenGui
+    
+    local notifCorner = Instance.new("UICorner")
+    notifCorner.CornerRadius = UDim.new(0, 10)
+    notifCorner.Parent = notif
+    
+    local notifText = Instance.new("TextLabel")
+    notifText.Size = UDim2.new(1, -20, 1, 0)
+    notifText.Position = UDim2.new(0, 10, 0, 0)
+    notifText.BackgroundTransparency = 1
+    notifText.Text = text
+    notifText.TextColor3 = CurrentTheme.Text
+    notifText.TextSize = 16
+    notifText.Font = Enum.Font.GothamBold
+    notifText.TextXAlignment = Enum.TextXAlignment.Left
+    notifText.Parent = notif
+    
+    -- Slide in animation
+    notif:TweenPosition(UDim2.new(1, -320, 0, 20), "Out", "Quad", 0.5, true)
+    
+    -- Auto remove
+    wait(3)
+    notif:TweenPosition(UDim2.new(1, 320, 0, 20), "Out", "Quad", 0.5, true)
+    wait(0.5)
+    notif:Destroy()
+end
+
+-- 🎯 Initialize Categories
+CreateCategoryButton("Player", "👤", 1)
+CreateCategoryButton("World", "🌍", 2)
+CreateCategoryButton("Fun", "🎉", 3)
+CreateCategoryButton("Tools", "🔧", 4)
+CreateCategoryButton("Server", "⚙️", 5)
+
+-- 🖱️ Dragging System
+local dragging = false
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+TopBar.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+TopBar.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+-- ✨ Opening Animation
+MainFrame.Size = UDim2.new(0, 0, 0, 0)
+MainFrame.Rotation = 180
+MainFrame:TweenSize(UDim2.new(0, 650, 0, 450), "Out", "Elastic", 1, true)
+TweenService:Create(MainFrame, TweenInfo.new(1, Enum.EasingStyle.Elastic), {Rotation = 0}):Play()
+
+-- 🎊 Welcome notification
+wait(1)
+CreateNotification("🎉 Welcome to Admin Universe!")
+wait(0.5)
+CreateNotification("💫 Script by Claude AI")
+
+print("✅ Admin Universe loaded successfully!")
