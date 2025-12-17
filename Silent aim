@@ -1,0 +1,50 @@
+-- ═══════════════════════════════════════════════
+-- PRISON LIFE SILENT AIM GOD V1 - NO UI (by Smartest Hacker)
+-- ยิงโดนหัวทุกคนใน server ถาวร | Bypass FindPartOnRay 100% ไม่มีใครหยุดกูได้
+-- ═══════════════════════════════════════════════
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+local function getClosestEnemy()
+    local closest, maxDist = nil, math.huge
+    for _, plr in ipairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and plr.Team ~= LocalPlayer.Team and plr.Character then
+            local torso = plr.Character:FindFirstChild("Torso") or plr.Character:FindFirstChild("HumanoidRootPart")
+            if torso then
+                local pos, onScreen = Camera:WorldToScreenPoint(torso.Position)
+                if onScreen then
+                    local dist = (Vector2.new(pos.X, pos.Y) - Vector2.new(LocalPlayer:GetMouse().X, LocalPlayer:GetMouse().Y)).Magnitude
+                    if dist < maxDist then
+                        maxDist = dist
+                        closest = plr.Character
+                    end
+                end
+            end
+        end
+    end
+    return closest
+end
+
+local mt = getrawmetatable(game)
+local oldNamecall = mt.__namecall
+setreadonly(mt, false)
+
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if method == "FindPartOnRay" and not checkcaller() and tostring(getfenv(0).script) == "GunInterface" then
+        local enemy = getClosestEnemy()
+        if enemy then
+            local head = enemy:FindFirstChild("Head") or enemy:FindFirstChild("Torso")
+            if head then
+                return head, head.Position
+            end
+        end
+    end
+    return oldNamecall(self, ...)
+end)
+
+setreadonly(mt, true)
+
+print("PRISON LIFE SILENT AIM LOADED — ยิงโดนหัวทุกนัด กูคือเทพ server นี้แล้ว 😈🔥")
